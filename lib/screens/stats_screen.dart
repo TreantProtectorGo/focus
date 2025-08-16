@@ -30,17 +30,20 @@ class StatsScreen extends StatelessWidget {
                     style: theme.textTheme.headlineLarge,
                   ),
                   const SizedBox(height: 15),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      _buildPeriodButton('今天', false, theme),
-                      const SizedBox(width: 8),
-                      _buildPeriodButton('本週', true, theme),
-                      const SizedBox(width: 8),
-                      _buildPeriodButton('本月', false, theme),
-                      const SizedBox(width: 8),
-                      _buildPeriodButton('全部', false, theme),
-                    ],
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildPeriodButton('今天', false, theme),
+                        const SizedBox(width: 6), // Reduced spacing
+                        _buildPeriodButton('本週', true, theme),
+                        const SizedBox(width: 6), // Reduced spacing
+                        _buildPeriodButton('本月', false, theme),
+                        const SizedBox(width: 6), // Reduced spacing
+                        _buildPeriodButton('全部', false, theme),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -115,6 +118,8 @@ class StatsScreen extends StatelessWidget {
                     
                     // 成就徽章
                     _buildAchievementsSection(theme),
+                    
+                    const SizedBox(height: 80), // Add bottom padding to prevent overflow
                   ],
                 ),
               ),
@@ -127,7 +132,7 @@ class StatsScreen extends StatelessWidget {
 
   Widget _buildPeriodButton(String text, bool isActive, ThemeData theme) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8), // Reduced padding
       decoration: BoxDecoration(
         color: isActive ? theme.colorScheme.primary : theme.colorScheme.surface,
         borderRadius: BorderRadius.circular(24),
@@ -228,8 +233,8 @@ class StatsScreen extends StatelessWidget {
           
           // 简化的柱状图
           Container(
-            height: 200,
-            padding: const EdgeInsets.all(20),
+            height: 220, // Increased height to accommodate content
+            padding: const EdgeInsets.all(16), // Reduced padding
             decoration: BoxDecoration(
               color: theme.colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(8),
@@ -238,13 +243,13 @@ class StatsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _buildBar('週一', 60, 2, theme),
-                _buildBar('週二', 80, 3, theme),
-                _buildBar('週三', 120, 5, theme),
-                _buildBar('週四', 100, 4, theme),
-                _buildBar('週五', 140, 6, theme),
-                _buildBar('週六', 60, 2, theme),
-                _buildBar('週日', 40, 1, theme),
+                _buildBar('週一', 50, 2, theme), // Reduced bar heights
+                _buildBar('週二', 65, 3, theme),
+                _buildBar('週三', 95, 5, theme),
+                _buildBar('週四', 80, 4, theme),
+                _buildBar('週五', 110, 6, theme),
+                _buildBar('週六', 50, 2, theme),
+                _buildBar('週日', 35, 1, theme),
               ],
             ),
           ),
@@ -254,40 +259,44 @@ class StatsScreen extends StatelessWidget {
   }
 
   Widget _buildBar(String label, double height, int value, ThemeData theme) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        Text(
-          value.toString(),
-          style: theme.textTheme.bodySmall?.copyWith(
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 4),
-        Container(
-          width: 28,
-          height: height,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                theme.colorScheme.primary,
-                theme.colorScheme.primary.withValues(alpha: 0.7),
-              ],
+    return Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisSize: MainAxisSize.min, // Important: minimize column size
+        children: [
+          Text(
+            value.toString(),
+            style: theme.textTheme.bodySmall?.copyWith(
+              fontWeight: FontWeight.w500,
+              fontSize: 12,
             ),
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
           ),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: theme.textTheme.bodySmall?.copyWith(
-            color: theme.colorScheme.onSurfaceVariant,
-            fontSize: 10,
+          const SizedBox(height: 3), // Reduced spacing
+          Container(
+            width: 24, // Slightly smaller width
+            height: height,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [
+                  theme.colorScheme.primary,
+                  theme.colorScheme.primary.withValues(alpha: 0.7),
+                ],
+              ),
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
+            ),
           ),
-        ),
-      ],
+          const SizedBox(height: 6), // Reduced spacing
+          Text(
+            label,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: theme.colorScheme.onSurfaceVariant,
+              fontSize: 9, // Smaller font
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -430,9 +439,9 @@ class StatsScreen extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             crossAxisCount: 3,
-            childAspectRatio: 0.8,
-            crossAxisSpacing: 15,
-            mainAxisSpacing: 15,
+            childAspectRatio: 0.85, // Slightly increased ratio to prevent overflow
+            crossAxisSpacing: 12, // Reduced spacing
+            mainAxisSpacing: 12, // Reduced spacing
             children: [
               _buildAchievementItem('🍅', '初次專注', '完成第一個番茄鐘', true, theme),
               _buildAchievementItem('🔥', '連續一週', '連續7天使用', true, theme),
@@ -455,7 +464,7 @@ class StatsScreen extends StatelessWidget {
     ThemeData theme,
   ) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(8), // Reduced padding to prevent overflow
       decoration: BoxDecoration(
         color: isUnlocked 
             ? const LinearGradient(
@@ -478,11 +487,11 @@ class StatsScreen extends StatelessWidget {
           Text(
             icon,
             style: TextStyle(
-              fontSize: 30,
+              fontSize: 24, // Reduced icon size
               color: isUnlocked ? null : Colors.grey,
             ),
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 6), // Reduced spacing
           Text(
             title,
             style: theme.textTheme.bodyMedium?.copyWith(
@@ -493,12 +502,12 @@ class StatsScreen extends StatelessWidget {
             ),
             textAlign: TextAlign.center,
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2), // Reduced spacing
           Text(
             description,
             style: theme.textTheme.bodySmall?.copyWith(
               color: theme.colorScheme.onSurfaceVariant,
-              fontSize: 10,
+              fontSize: 9, // Reduced font size to prevent overflow
             ),
             textAlign: TextAlign.center,
             maxLines: 2,

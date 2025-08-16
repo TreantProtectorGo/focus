@@ -54,7 +54,7 @@ class TasksScreen extends StatelessWidget {
             
             // 内容区域
             Expanded(
-              child: Padding(
+              child: SingleChildScrollView(
                 padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -112,6 +112,8 @@ class TasksScreen extends StatelessWidget {
                         theme: theme,
                       ),
                     ),
+                    
+                    const SizedBox(height: 100), // Add bottom padding for FAB
                   ],
                 ),
               ),

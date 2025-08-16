@@ -86,10 +86,10 @@ class _MainScreenState extends State<MainScreen> {
           elevation: 0,
           items: _navigationItems.map((item) => BottomNavigationBarItem(
             icon: Container(
-              padding: const EdgeInsets.all(4),
+              padding: const EdgeInsets.all(2), // Reduced padding to prevent overflow
               child: Icon(
                 item.icon,
-                size: 24,
+                size: 22, // Slightly smaller icon
               ),
             ),
             label: item.label,

@@ -352,7 +352,7 @@ class _TimerScreenState extends State<TimerScreen>
                       }),
                     ),
                     
-                    const SizedBox(height: 40),
+                    const SizedBox(height: 30), // Reduced spacing
                     
                     // 控制按钮
                     Row(
@@ -384,6 +384,8 @@ class _TimerScreenState extends State<TimerScreen>
                         ),
                       ],
                     ),
+                    
+                    const SizedBox(height: 80), // Add bottom padding to prevent overflow
                   ],
                 ),
               ),

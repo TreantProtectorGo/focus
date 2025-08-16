@@ -86,6 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     
                     // 版本信息
                     _buildVersionInfo(theme),
+                    
+                    const SizedBox(height: 80), // Add bottom padding to prevent overflow
                   ],
                 ),
               ),
