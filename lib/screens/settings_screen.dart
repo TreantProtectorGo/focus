@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/theme_provider.dart';
 
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  State<SettingsScreen> createState() => _SettingsScreenState();
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   // 设定状态
   int _focusTime = 25;
   int _shortBreak = 5;
@@ -15,7 +17,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _autoStartBreak = true;
   bool _notifications = true;
   bool _vibration = false;
-  bool _darkMode = false;
   bool _aiTaskBreakdown = true;
   bool _smartSuggestions = true;
   bool _dataAnalysis = false;
@@ -185,52 +186,41 @@ class _SettingsScreenState extends State<SettingsScreen> {
     Color? backgroundColor,
     Color? borderColor,
   }) {
-    return Container(
-      decoration: BoxDecoration(
-        color: backgroundColor ?? theme.colorScheme.surface,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: borderColor ?? theme.colorScheme.outline.withValues(alpha: 0.2),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
+    return Card(
+      color: backgroundColor,
       child: Column(
         children: [
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
               color: backgroundColor != null 
-                  ? const Color(0xFFFEE2E2)
-                  : theme.colorScheme.surfaceContainerHighest,
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                  ? theme.colorScheme.errorContainer
+                  : theme.colorScheme.surfaceContainerHigh,
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
             ),
             child: Row(
               children: [
                 Text(icon, style: const TextStyle(fontSize: 18)),
-                const SizedBox(width: 10),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         title,
-                        style: theme.textTheme.headlineMedium?.copyWith(
+                        style: theme.textTheme.titleLarge?.copyWith(
                           color: backgroundColor != null 
-                              ? const Color(0xFFDC2626)
+                              ? theme.colorScheme.onErrorContainer
                               : theme.colorScheme.onSurface,
                         ),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 4),
                       Text(
                         subtitle,
                         style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
+                          color: backgroundColor != null
+                              ? theme.colorScheme.onErrorContainer
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -421,6 +411,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildAppearanceSettings(ThemeData theme) {
+    final themeMode = ref.watch(themeModeProvider);
+    final themeNotifier = ref.read(themeModeProvider.notifier);
+    
     return _buildSettingsSection(
       title: '外觀設定',
       subtitle: '自訂應用程式的外觀與主題',
@@ -428,11 +421,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
       theme: theme,
       children: [
         _buildSettingItem(
-          title: '深色模式',
-          subtitle: '使用深色主題保護眼睛',
-          control: _buildToggleSwitch(_darkMode, (value) {
-            setState(() => _darkMode = value);
-          }),
+          title: '主題模式',
+          subtitle: '選擇應用程式的主題模式',
+          control: _buildDropdown<String>(
+            themeNotifier.getThemeModeString(),
+            ['跟隨系統', '淺色模式', '深色模式'],
+            (value) {
+              switch (value) {
+                case '跟隨系統':
+                  themeNotifier.setSystemTheme();
+                  break;
+                case '淺色模式':
+                  themeNotifier.setLightTheme();
+                  break;
+                case '深色模式':
+                  themeNotifier.setDarkTheme();
+                  break;
+              }
+            },
+          ),
           theme: theme,
         ),
         _buildSettingItem(

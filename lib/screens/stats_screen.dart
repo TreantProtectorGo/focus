@@ -227,7 +227,7 @@ class StatsScreen extends StatelessWidget {
         children: [
           Text(
             '📊 本週專注趨勢',
-            style: theme.textTheme.headlineMedium,
+            style: theme.textTheme.titleLarge,
           ),
           const SizedBox(height: 20),
           

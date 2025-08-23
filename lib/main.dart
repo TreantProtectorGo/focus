@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'theme/app_theme.dart';
+import 'package:dynamic_color/dynamic_color.dart';
+import 'theme/app_theme_m3.dart';
+import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 import 'screens/timer_screen.dart';
 import 'screens/tasks_screen.dart';
@@ -17,14 +19,31 @@ class FocusApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return MaterialApp.router(
-      title: '專注番茄',
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.system,
-      routerConfig: _router,
-      locale: const Locale('zh', 'TW'),
-      debugShowCheckedModeBanner: false,
+    final themeMode = ref.watch(themeModeProvider);
+    
+    return DynamicColorBuilder(
+      builder: (ColorScheme? lightColorScheme, ColorScheme? darkColorScheme) {
+        return MaterialApp.router(
+          title: '專注番茄',
+          theme: ThemeData(
+            useMaterial3: true,
+            colorScheme: lightColorScheme?.harmonized() ?? 
+                AppTheme.lightTheme.colorScheme,
+            fontFamily: 'Roboto',
+          ),
+          darkTheme: ThemeData(
+            useMaterial3: true,
+            colorScheme: darkColorScheme?.harmonized() ?? 
+                AppTheme.darkTheme.colorScheme,
+            fontFamily: 'Roboto',
+            brightness: Brightness.dark,
+          ),
+          themeMode: themeMode,
+          routerConfig: _router,
+          locale: const Locale('zh', 'TW'),
+          debugShowCheckedModeBanner: false,
+        );
+      },
     );
   }
 }

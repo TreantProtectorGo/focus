@@ -204,7 +204,7 @@ class _TimerScreenState extends State<TimerScreen>
                   const SizedBox(height: 4),
                   Text(
                     '第 $_currentSession 個番茄鐘',
-                    style: theme.textTheme.bodyMedium?.copyWith(
+                    style: theme.textTheme.titleMedium?.copyWith(
                       color: theme.colorScheme.onSurfaceVariant,
                     ),
                   ),
@@ -310,7 +310,7 @@ class _TimerScreenState extends State<TimerScreen>
                                         _formatTime(_timeLeftInSeconds),
                                         style: theme.textTheme.displayLarge?.copyWith(
                                           fontFamily: 'RobotoMono',
-                                          fontSize: 64,
+                                          fontSize: 48,
                                           fontWeight: FontWeight.w300,
                                           color: theme.colorScheme.onSurface,
                                         ),

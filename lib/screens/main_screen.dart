@@ -67,34 +67,17 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: widget.child,
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: Theme.of(context).colorScheme.outline.withValues(alpha: 0.2),
-              width: 1,
-            ),
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _selectedIndex,
+        onDestinationSelected: _onItemTapped,
+        destinations: _navigationItems.map((item) => NavigationDestination(
+          icon: Icon(item.icon),
+          selectedIcon: Icon(
+            item.icon, 
+            color: Theme.of(context).colorScheme.onPrimaryContainer,
           ),
-        ),
-        child: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: _selectedIndex,
-          onTap: _onItemTapped,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
-          unselectedItemColor: Theme.of(context).colorScheme.onSurfaceVariant,
-          backgroundColor: Theme.of(context).colorScheme.surface,
-          elevation: 0,
-          items: _navigationItems.map((item) => BottomNavigationBarItem(
-            icon: Container(
-              padding: const EdgeInsets.all(2), // Reduced padding to prevent overflow
-              child: Icon(
-                item.icon,
-                size: 22, // Slightly smaller icon
-              ),
-            ),
-            label: item.label,
-          )).toList(),
-        ),
+          label: item.label,
+        )).toList(),
       ),
     );
   }
