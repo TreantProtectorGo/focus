@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:dynamic_color/dynamic_color.dart';
-import 'theme/app_theme_m3.dart';
+import 'theme/app_theme.dart';
 import 'providers/theme_provider.dart';
 import 'screens/main_screen.dart';
 import 'screens/timer_screen.dart';
@@ -25,19 +25,21 @@ class FocusApp extends ConsumerWidget {
       builder: (ColorScheme? lightColorScheme, ColorScheme? darkColorScheme) {
         return MaterialApp.router(
           title: '專注番茄',
-          theme: ThemeData(
-            useMaterial3: true,
-            colorScheme: lightColorScheme?.harmonized() ?? 
-                AppTheme.lightTheme.colorScheme,
-            fontFamily: 'Roboto',
-          ),
-          darkTheme: ThemeData(
-            useMaterial3: true,
-            colorScheme: darkColorScheme?.harmonized() ?? 
-                AppTheme.darkTheme.colorScheme,
-            fontFamily: 'Roboto',
-            brightness: Brightness.dark,
-          ),
+          theme: lightColorScheme != null 
+              ? ThemeData(
+                  useMaterial3: true,
+                  colorScheme: lightColorScheme.harmonized(),
+                  fontFamily: 'Roboto',
+                )
+              : AppTheme(Theme.of(context).textTheme).light(),
+          darkTheme: darkColorScheme != null
+              ? ThemeData(
+                  useMaterial3: true,
+                  colorScheme: darkColorScheme.harmonized(),
+                  fontFamily: 'Roboto',
+                  brightness: Brightness.dark,
+                )
+              : AppTheme(Theme.of(context).textTheme).dark(), 
           themeMode: themeMode,
           routerConfig: _router,
           locale: const Locale('zh', 'TW'),

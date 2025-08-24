@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
+import 'package:material_symbols_icons/symbols.dart';
 class MainScreen extends StatefulWidget {
   final Widget child;
   
@@ -16,22 +16,26 @@ class _MainScreenState extends State<MainScreen> {
   static const List<NavigationItem> _navigationItems = [
     NavigationItem(
       path: '/timer',
-      icon: Icons.access_time,
+      icon: Icons.timer_outlined,
+      selectedIcon: Icons.timer,
       label: '計時器',
     ),
     NavigationItem(
       path: '/tasks', 
-      icon: Icons.list_alt,
+      icon: Icons.task_outlined,
+      selectedIcon: Icons.task,
       label: '任務',
     ),
     NavigationItem(
       path: '/stats',
-      icon: Icons.trending_up,
+      icon: Symbols.bid_landscape,
+      selectedIcon: Symbols.bid_landscape,
       label: '統計',
     ),
     NavigationItem(
       path: '/settings',
-      icon: Icons.settings,
+      icon: Icons.settings_outlined,
+      selectedIcon: Icons.settings,
       label: '設定',
     ),
   ];
@@ -68,16 +72,24 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: widget.child,
       bottomNavigationBar: NavigationBar(
+        height: 65,
         selectedIndex: _selectedIndex,
         onDestinationSelected: _onItemTapped,
-        destinations: _navigationItems.map((item) => NavigationDestination(
-          icon: Icon(item.icon),
-          selectedIcon: Icon(
-            item.icon, 
-            color: Theme.of(context).colorScheme.onPrimaryContainer,
-          ),
-          label: item.label,
-        )).toList(),
+        destinations: _navigationItems.map((item) {
+          if (item.icon == Symbols.bid_landscape) {
+            return NavigationDestination(
+              icon: Icon(Symbols.bid_landscape, fill: 0),
+              selectedIcon: Icon(Symbols.bid_landscape, fill: 1),
+              label: item.label,
+            );
+          } else {
+            return NavigationDestination(
+              icon: Icon(item.icon),
+              selectedIcon: Icon(item.selectedIcon),
+              label: item.label,
+            );
+          }
+        }).toList(),
       ),
     );
   }
@@ -86,11 +98,13 @@ class _MainScreenState extends State<MainScreen> {
 class NavigationItem {
   final String path;
   final IconData icon;
+  final IconData selectedIcon;
   final String label;
 
   const NavigationItem({
     required this.path,
     required this.icon,
+    required this.selectedIcon,
     required this.label,
   });
 }

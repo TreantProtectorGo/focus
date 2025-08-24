@@ -11,6 +11,8 @@ dependencies:
   flutter:
     sdk: flutter
 
+  material_symbols_icons: 4.2867.0
+
   # Material Design Icons
   cupertino_icons: ^1.0.8
   
@@ -53,6 +55,7 @@ dependencies:
   
   # Material 3 Dynamic Color Support
   dynamic_color: ^1.7.0
+  flutter_svg: ^2.0.13
 
 dev_dependencies:
   flutter_test:
