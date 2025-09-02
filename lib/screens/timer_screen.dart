@@ -11,28 +11,28 @@ class TimerScreen extends StatefulWidget {
 
 class _TimerScreenState extends State<TimerScreen>
     with TickerProviderStateMixin {
-  // 计时器状态
+  // Timer status
   Timer? _timer;
-  int _timeLeftInSeconds = 25 * 60; // 25分钟
+  int _timeLeftInSeconds = 25 * 60; // 25mins
   int _totalTimeInSeconds = 25 * 60;
   bool _isRunning = false;
   bool _isRestMode = false;
-  int _currentSession = 2; // 当前第几个番茄钟
-  int _completedSessions = 1; // 已完成的番茄钟数
+  int _currentSession = 2; // Pomodoro technique
+  int _completedSessions = 1; // Completed pomodoro technique count
 
-  // 动画控制器
+  // Animation controller
   late AnimationController _progressController;
   late AnimationController _pulseController;
   late Animation<double> _pulseAnimation;
 
-  // 当前任务
+  // Current task
   final String _currentTask = "撰寫產品需求文件 - 第一章節";
 
   @override
   void initState() {
     super.initState();
-    
-    // 初始化动画控制器
+
+    // Initialize the animation controller
     _progressController = AnimationController(
       duration: Duration(seconds: _totalTimeInSeconds),
       vsync: this,
@@ -51,7 +51,7 @@ class _TimerScreenState extends State<TimerScreen>
       curve: Curves.easeInOut,
     ));
     
-    // 设置初始进度
+    // Set initial progress
     _updateProgress();
   }
 
@@ -59,7 +59,7 @@ class _TimerScreenState extends State<TimerScreen>
   void dispose() {
     _timer?.cancel();
     _progressController.dispose();
-    _pulseController.dispose();
+    _pulseController.dispose(); 
     super.dispose();
   }
 
@@ -117,24 +117,24 @@ class _TimerScreenState extends State<TimerScreen>
       _isRunning = false;
       
       if (!_isRestMode) {
-        // 完成一个专注番茄钟
+        // Complete a dedicated pomodoro technique
         _completedSessions++;
         _currentSession++;
         
-        // 检查是否应该长休息
+        // Check if you should have a long rest
         if (_completedSessions % 4 == 0) {
-          // 长休息 15分钟
+          // Long rest 15 minutes
           _isRestMode = true;
           _timeLeftInSeconds = 15 * 60;
           _totalTimeInSeconds = 15 * 60;
         } else {
-          // 短休息 5分钟
+          // Short rest 5 minutes
           _isRestMode = true;
           _timeLeftInSeconds = 5 * 60;
           _totalTimeInSeconds = 5 * 60;
         }
       } else {
-        // 休息结束，开始新的专注时间
+        // Rest period ended, start a new focus time
         _isRestMode = false;
         _timeLeftInSeconds = 25 * 60;
         _totalTimeInSeconds = 25 * 60;
@@ -142,8 +142,8 @@ class _TimerScreenState extends State<TimerScreen>
     });
     
     _updateProgress();
-    
-    // 显示完成通知
+
+    // Show completion dialog
     _showCompletionDialog();
   }
 
@@ -178,13 +178,11 @@ class _TimerScreenState extends State<TimerScreen>
     final colorScheme = theme.colorScheme;
     
     return Scaffold(
-      backgroundColor: _isRestMode 
-          ? const Color(0xFFF0FDF4) // 休息模式浅绿色背景
-          : colorScheme.surface,
+      backgroundColor: colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
-            // 头部
+            // head
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               decoration: BoxDecoration(
@@ -212,55 +210,54 @@ class _TimerScreenState extends State<TimerScreen>
               ),
             ),
             
-            // 主要内容区域
+            // Main content area
             Expanded(
               child: SingleChildScrollView(
+                physics: const NeverScrollableScrollPhysics(),
                 padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    // 当前任务卡片
-                    if (!_isRestMode) ...[
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                        margin: const EdgeInsets.only(bottom: 30),
-                        decoration: BoxDecoration(
-                          color: theme.colorScheme.surface,
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                            color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                    // Current task card
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                      margin: const EdgeInsets.only(bottom: 30),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.surface,
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: theme.colorScheme.outline.withValues(alpha: 0.2),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 4),
                           ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.08),
-                              blurRadius: 12,
-                              offset: const Offset(0, 4),
-                            ),
-                          ],
-                        ),
-                        child: Column(
-                          children: [
-                            Text(
-                              '當前任務',
-                              style: theme.textTheme.labelLarge?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              _currentTask,
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
+                        ],
                       ),
-                    ],
+                      child: Column(
+                        children: [
+                          Text(
+                            _isRestMode ? '休息時間' : '當前任務',
+                            style: theme.textTheme.labelLarge?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant,
+                              letterSpacing: 1,
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          Text(
+                            _isRestMode ? '放鬆一下吧 ☕' : _currentTask,
+                            style: theme.textTheme.bodyLarge?.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
                     
-                    // 计时器圆圈
+                    // Timer circle
                     AnimatedBuilder(
                       animation: _pulseAnimation,
                       builder: (context, child) {
@@ -282,7 +279,7 @@ class _TimerScreenState extends State<TimerScreen>
                             ),
                             child: Stack(
                               children: [
-                                // 进度环
+                                // Progress ring
                                 Positioned.fill(
                                   child: AnimatedBuilder(
                                     animation: _progressController,
@@ -291,9 +288,7 @@ class _TimerScreenState extends State<TimerScreen>
                                         painter: ProgressRingPainter(
                                           progress: _progressController.value,
                                           strokeWidth: 8,
-                                          progressColor: _isRestMode 
-                                              ? const Color(0xFF22C55E) 
-                                              : theme.colorScheme.primary,
+                                          progressColor: theme.colorScheme.primary,
                                           backgroundColor: theme.colorScheme.outline.withValues(alpha: 0.2),
                                         ),
                                       );
@@ -301,7 +296,7 @@ class _TimerScreenState extends State<TimerScreen>
                                   ),
                                 ),
                                 
-                                // 时间显示
+                                // Time display
                                 Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -334,7 +329,7 @@ class _TimerScreenState extends State<TimerScreen>
                     
                     const SizedBox(height: 30),
                     
-                    // 番茄钟进度指示器
+                    // Pomodoro technique indicator
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: List.generate(4, (index) {
@@ -354,11 +349,11 @@ class _TimerScreenState extends State<TimerScreen>
                     
                     const SizedBox(height: 30), // Reduced spacing
                     
-                    // 控制按钮
+                    // Control buttons
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // 停止按钮
+                        // Stop button
                         _buildControlButton(
                           icon: Icons.stop,
                           onPressed: _isRunning ? _stopTimer : null,
@@ -367,7 +362,7 @@ class _TimerScreenState extends State<TimerScreen>
                         
                         const SizedBox(width: 20),
                         
-                        // 主按钮 (播放/暂停)
+                        // Main button (play/pause)
                         _buildControlButton(
                           icon: _isRunning ? Icons.pause : Icons.play_arrow,
                           onPressed: _isRunning ? _pauseTimer : _startTimer,
@@ -376,7 +371,7 @@ class _TimerScreenState extends State<TimerScreen>
                         
                         const SizedBox(width: 20),
                         
-                        // 跳过按钮
+                        // Skip button
                         _buildControlButton(
                           icon: Icons.skip_next,
                           onPressed: _isRunning ? _skipTimer : null,
@@ -463,7 +458,7 @@ class ProgressRingPainter extends CustomPainter {
     final center = Offset(size.width / 2, size.height / 2);
     final radius = math.min(size.width, size.height) / 2 - strokeWidth / 2;
 
-    // 背景圆环
+    // Background ring
     final backgroundPaint = Paint()
       ..color = backgroundColor
       ..strokeWidth = strokeWidth
@@ -472,7 +467,7 @@ class ProgressRingPainter extends CustomPainter {
 
     canvas.drawCircle(center, radius, backgroundPaint);
 
-    // 进度圆环
+    // Progress ring
     final progressPaint = Paint()
       ..color = progressColor
       ..strokeWidth = strokeWidth
@@ -482,7 +477,7 @@ class ProgressRingPainter extends CustomPainter {
     final sweepAngle = 2 * math.pi * progress;
     canvas.drawArc(
       Rect.fromCircle(center: center, radius: radius),
-      -math.pi / 2, // 从顶部开始
+      -math.pi / 2, // Start at the top
       sweepAngle,
       false,
       progressPaint,
