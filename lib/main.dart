@@ -30,16 +30,54 @@ class FocusApp extends ConsumerWidget {
                   useMaterial3: true,
                   colorScheme: lightColorScheme.harmonized(),
                   fontFamily: 'Roboto',
+                  pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+                    },
+                  ),
                 )
-              : AppTheme(Theme.of(context).textTheme).light(),
+              : AppTheme(Theme.of(context).textTheme).light().copyWith(
+                  pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+                    },
+                  ),
+                ),
           darkTheme: darkColorScheme != null
               ? ThemeData(
                   useMaterial3: true,
                   colorScheme: darkColorScheme.harmonized(),
                   fontFamily: 'Roboto',
                   brightness: Brightness.dark,
+                  pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+                    },
+                  ),
                 )
-              : AppTheme(Theme.of(context).textTheme).dark(), 
+              : AppTheme(Theme.of(context).textTheme).dark().copyWith(
+                  pageTransitionsTheme: const PageTransitionsTheme(
+                    builders: {
+                      TargetPlatform.android: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.iOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.macOS: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.linux: ZoomPageTransitionsBuilder(),
+                      TargetPlatform.windows: ZoomPageTransitionsBuilder(),
+                    },
+                  ),
+                ), 
           themeMode: themeMode,
           routerConfig: _router,
           locale: const Locale('zh', 'TW'),
