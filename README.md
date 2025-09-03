@@ -40,3 +40,7 @@ flutter run
   - `/providers`: State management
   - `/theme`: Application theme
   - `/utils`: Utility functions
+
+## TODO List
+
+- [ ] Integrate Gemini API for smart task management
