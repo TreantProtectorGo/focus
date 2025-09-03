@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math' as math;
+import '../utils/snackbar_util.dart';
 
 class TimerScreen extends StatefulWidget {
   const TimerScreen({super.key});
@@ -143,25 +144,24 @@ class _TimerScreenState extends State<TimerScreen>
     
     _updateProgress();
 
-    // Show completion dialog
-    _showCompletionDialog();
+    // Show completion snackbar instead of dialog
+    _showCompletionSnackBar();
   }
 
-  void _showCompletionDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        title: Text(_isRestMode ? '🍅 番茄鐘完成！' : '⏱️ 休息結束！'),
-        content: Text(_isRestMode ? '休息一下吧' : '準備開始下一個專注時間'),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-            child: const Text('確定'),
-          ),
-        ],
+  void _showCompletionSnackBar() {
+    final message = _isRestMode ? '番茄鐘完成！休息一下吧' : '休息結束！準備開始下一個專注時間';
+    final iconData = _isRestMode ? Icons.spa : Icons.timer;
+    
+    SnackBarUtil.showInfoSnackBar(
+      context,
+      message: message,
+      icon: iconData,
+      duration: const Duration(seconds: 4),
+      action: SnackBarAction(
+        label: '確定',
+        onPressed: () {
+          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        },
       ),
     );
   }
