@@ -22,14 +22,6 @@ class TasksScreen extends StatelessWidget {
                     '今日任務',
                     style: theme.textTheme.headlineLarge,
                   ),
-                  FloatingActionButton.small(
-                    onPressed: () {
-                      // TODO: 添加新任务
-                    },
-                    elevation: 2,
-                    heroTag: "addTask",
-                    child: const Icon(Icons.add),
-                  ),
                 ],
               ),
             ),
@@ -106,17 +98,35 @@ class TasksScreen extends StatelessWidget {
       ),
       
       // 浮动操作按钮
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // TODO: 显示AI对话框
-        },
-        backgroundColor: theme.colorScheme.primaryContainer,
-        foregroundColor: theme.colorScheme.onPrimaryContainer,
-        elevation: 3,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+      floatingActionButton: Container(
+        decoration: BoxDecoration(
+          color: theme.colorScheme.primaryContainer,
+          borderRadius: BorderRadius.circular(28),
         ),
-        child: const Icon(Icons.smart_toy),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            FloatingActionButton.small(
+              onPressed: () {
+                // TODO: Add Task
+              },
+              heroTag: "addTaskButton",
+              elevation: 0,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.add),
+            ),
+            FloatingActionButton.small(
+              onPressed: () {
+                // TODO: 显示AI对话框
+              },
+              heroTag: "aiButton",
+              elevation: 0,
+              shape: const CircleBorder(),
+              child: const Icon(Icons.note_alt_outlined),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -277,12 +287,6 @@ class TasksScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              CircleAvatar(
-                radius: 12,
-                backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-                child: const Icon(Icons.smart_toy),
-              ),
-              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   '讓 AI 幫你拆解大任務',
