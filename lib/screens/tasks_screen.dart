@@ -8,7 +8,7 @@ class TasksScreen extends StatelessWidget {
     final theme = Theme.of(context);
     
     return Scaffold(
-      backgroundColor: theme.colorScheme.background,
+      backgroundColor: theme.colorScheme.surface,
       body: SafeArea(
         child: Column(
           children: [
@@ -43,7 +43,7 @@ class TasksScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     // 进行中任务
-                    _buildSectionHeader('🎯 進行中', theme),
+                    _buildSectionHeader('進行中', theme),
                     const SizedBox(height: 15),
                     
                     _buildTaskCard(
@@ -56,7 +56,7 @@ class TasksScreen extends StatelessWidget {
                     const SizedBox(height: 30),
                     
                     // 待办事项
-                    _buildSectionHeader('📋 待辦事項', theme),
+                    _buildSectionHeader('待辦事項', theme),
                     const SizedBox(height: 15),
                     
                     // AI 拆解卡片
@@ -83,7 +83,7 @@ class TasksScreen extends StatelessWidget {
                     const SizedBox(height: 30),
                     
                     // 已完成
-                    _buildSectionHeader('✅ 已完成', theme),
+                    _buildSectionHeader('已完成', theme),
                     const SizedBox(height: 15),
                     
                     Opacity(
@@ -116,10 +116,7 @@ class TasksScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(16),
         ),
-        child: const Text(
-          '🤖',
-          style: TextStyle(fontSize: 24),
-        ),
+        child: const Icon(Icons.smart_toy),
       ),
     );
   }
@@ -166,7 +163,7 @@ class TasksScreen extends StatelessWidget {
       case 'completed':
         priorityColor = theme.colorScheme.secondary;
         priorityBackgroundColor = theme.colorScheme.secondaryContainer;
-        priorityText = '✅ 已完成';
+        priorityText = '已完成';
         break;
       default:
         priorityColor = theme.colorScheme.onSurfaceVariant;
@@ -202,7 +199,7 @@ class TasksScreen extends StatelessWidget {
                       onPressed: () {
                         // TODO: AI 拆解
                       },
-                      icon: const Text('🤖', style: TextStyle(fontSize: 16)),
+                      icon: const Icon(Icons.smart_toy),
                       style: IconButton.styleFrom(
                         minimumSize: const Size(32, 32),
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -231,7 +228,7 @@ class TasksScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Text('🍅', style: TextStyle(fontSize: 12)),
+                    const Icon(Icons.timer_outlined),
                     const SizedBox(width: 4),
                     Text(
                       '$pomodoroCount 個番茄鐘',
@@ -283,10 +280,7 @@ class TasksScreen extends StatelessWidget {
               CircleAvatar(
                 radius: 12,
                 backgroundColor: theme.colorScheme.primary.withOpacity(0.2),
-                child: const Text(
-                  '🤖',
-                  style: TextStyle(fontSize: 12),
-                ),
+                child: const Icon(Icons.smart_toy),
               ),
               const SizedBox(width: 12),
               Expanded(
