@@ -43,6 +43,7 @@ class TasksScreen extends StatelessWidget {
                       pomodoroCount: 2,
                       priority: 'high',
                       theme: theme,
+                      context: context,
                     ),
                     
                     const SizedBox(height: 30),
@@ -61,6 +62,7 @@ class TasksScreen extends StatelessWidget {
                       pomodoroCount: 3,
                       priority: 'medium',
                       theme: theme,
+                      context: context,
                     ),
                     
                     const SizedBox(height: 12),
@@ -70,6 +72,7 @@ class TasksScreen extends StatelessWidget {
                       pomodoroCount: 1,
                       priority: 'low',
                       theme: theme,
+                      context: context,
                     ),
                     
                     const SizedBox(height: 30),
@@ -85,6 +88,7 @@ class TasksScreen extends StatelessWidget {
                         pomodoroCount: 1,
                         priority: 'completed',
                         theme: theme,
+                        context: context,
                       ),
                     ),
                     
@@ -123,7 +127,7 @@ class TasksScreen extends StatelessWidget {
               heroTag: "aiButton",
               elevation: 0,
               shape: const CircleBorder(),
-              child: const Icon(Icons.note_alt_outlined),
+              child: const Icon(Icons.smart_toy),
             ),
           ],
         ),
@@ -149,6 +153,7 @@ class TasksScreen extends StatelessWidget {
     required int pomodoroCount,
     required String priority,
     required ThemeData theme,
+    required BuildContext context,
   }) {
     Color priorityColor;
     Color priorityBackgroundColor;
@@ -188,51 +193,72 @@ class TasksScreen extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    title,
-                    style: theme.textTheme.bodyLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
+      child: InkWell(
+        onTap: () {
+          // TODO: 编辑任务
+        },
+        borderRadius: BorderRadius.circular(16),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      title,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ),
-                ),
-                Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        // TODO: AI 拆解
-                      },
-                      icon: const Icon(Icons.smart_toy),
-                      style: IconButton.styleFrom(
-                        minimumSize: const Size(32, 32),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
+                  IconButton(
+                    onPressed: () {
+                      // 顯示任務詳情的AI分析
+                      showDialog(
+                        context: context,
+                        builder: (context) => AlertDialog(
+                          title: Row(
+                            children: [
+                              Icon(Icons.for_you, color: theme.colorScheme.primary),
+                              const SizedBox(width: 10),
+                              Text('AI 任務分析', style: theme.textTheme.titleLarge),
+                            ],
+                          ),
+                          content: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('任務名稱: $title'),
+                              const SizedBox(height: 10),
+                              Text('預估時間: $pomodoroCount 個番茄鐘（${pomodoroCount * 25} 分鐘）'),
+                              const SizedBox(height: 10),
+                              Text('AI 建議:'),
+                              const SizedBox(height: 5),
+                              Text('• 將任務分成小步驟以提高完成率'),
+                              Text('• 每個番茄鐘後記得休息 5 分鐘'),
+                              Text('• 設定明確的完成標準'),
+                            ],
+                          ),
+                          actions: [
+                            TextButton(
+                              onPressed: () => Navigator.pop(context),
+                              child: Text('關閉'),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    tooltip: 'AI 任務分析',
+                    icon: const Icon(Icons.smart_toy),
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size(32, 32),
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        // TODO: 编辑任务
-                      },
-                      icon: Icon(
-                        Icons.edit_outlined,
-                        size: 16,
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                      style: IconButton.styleFrom(
-                        minimumSize: const Size(32, 32),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
             const SizedBox(height: 8),
             Row(
               children: [
@@ -266,7 +292,7 @@ class TasksScreen extends StatelessWidget {
             ),
           ],
         ),
-      ),
+      ),),
     );
   }
 
