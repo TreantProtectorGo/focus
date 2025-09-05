@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:material_symbols_icons/symbols.dart';
 
 class TasksScreen extends StatelessWidget {
   const TasksScreen({super.key});
@@ -221,8 +222,6 @@ class TasksScreen extends StatelessWidget {
                         builder: (context) => AlertDialog(
                           title: Row(
                             children: [
-                              Icon(Icons.for_you, color: theme.colorScheme.primary),
-                              const SizedBox(width: 10),
                               Text('AI 任務分析', style: theme.textTheme.titleLarge),
                             ],
                           ),
@@ -251,7 +250,7 @@ class TasksScreen extends StatelessWidget {
                       );
                     },
                     tooltip: 'AI 任務分析',
-                    icon: const Icon(Icons.smart_toy),
+                    icon: const Icon(Symbols.sticky_note_2, fill: 1,),
                     style: IconButton.styleFrom(
                       minimumSize: const Size(32, 32),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
@@ -264,8 +263,6 @@ class TasksScreen extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.timer_outlined),
-                    const SizedBox(width: 4),
                     Text(
                       '$pomodoroCount 個番茄鐘',
                       style: theme.textTheme.bodySmall,
